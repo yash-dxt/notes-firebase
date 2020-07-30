@@ -1,5 +1,4 @@
 import 'package:firebase_notes/providers/auth_data.dart';
-import 'package:firebase_notes/screens/authscreens/settings_screen.dart';
 import 'package:firebase_notes/screens/authscreens/welcome_screen.dart';
 import 'package:firebase_notes/services/firestore_service.dart';
 import 'package:flutter/material.dart';
@@ -27,32 +26,50 @@ class SignUpScreen extends StatelessWidget {
                 key: _formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+
                   children: [
-                    TextFormField(
-                      decoration: InputDecoration(hintText: 'Email'),
-                      validator: (input) =>
-                          input.isNotEmpty ? null : "Enter a valid email!",
-                      onChanged: (value) {
-                        email = value;
-                      },
+                    Text(""" NOTES """, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
+                    SizedBox(height: 10,),
+                    Text(""" Let's get you a free account!""", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),),
+                    SizedBox(height: 20,),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.1,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Email',
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (input) =>
+                            input.isNotEmpty ? null : "Enter a valid email!",
+                        onChanged: (value) {
+                          email = value;
+                        },
+                      ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(hintText: 'Password'),
-                      validator: (input) => input.length > 6
-                          ? null
-                          : "Enter a password greater than 6 characters",
-                      obscureText: true,
-                      onChanged: (value) {
-                        password = value;
-                      },
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.1,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            hintText: 'Password', border: OutlineInputBorder()),
+                        validator: (input) => input.length > 6
+                            ? null
+                            : "Enter a password greater than 6 characters",
+                        obscureText: true,
+                        onChanged: (value) {
+                          password = value;
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        FlatButton.icon(
+                        RaisedButton.icon(
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
                               authData.changeBool();
@@ -66,29 +83,22 @@ class SignUpScreen extends StatelessWidget {
                                   MaterialPageRoute(
                                       builder: (context) => StreamProvider(
                                           create: (BuildContext context) {
-                                        final firebaseService =
-                                        FirestoreService();
-                                        return firebaseService
-                                            .getNotes(email);
-                                      },
+                                            final firebaseService =
+                                                FirestoreService();
+                                            return firebaseService
+                                                .getNotes(email);
+                                          },
                                           child: NotesScreen(email))));
                             }
                           },
                           icon: Icon(Icons.arrow_drop_down_circle),
                           label: Text('Sign Up and Log In'),
-                          color: Colors.orangeAccent,
                         ),
+                        SizedBox(
+                          width: 22,
+                        )
                       ],
                     ),
-                    FlatButton(
-                      child: Text('Go Back '),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => WelcomeScreen()));
-                      },
-                    )
                   ],
                 )),
           ),

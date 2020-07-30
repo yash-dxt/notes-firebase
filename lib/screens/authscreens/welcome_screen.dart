@@ -7,38 +7,33 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.cyan,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Notes'),
+          Text('NOTES', style: TextStyle(fontSize: 25, letterSpacing: 1.2),),
           SizedBox(
             height: 20,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              FlatButton.icon(
+              RaisedButton.icon(
                 onPressed: () {
-                  Navigator.pushReplacement(context,
+                  Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
-                icon: Icon(Icons.adjust),
+                icon: Icon(Icons.fingerprint, color: Colors.blueAccent,),
                 label: Text('Login!'),
-                color: Colors.orangeAccent,
               ),
-              SizedBox(
-                width: 10,
-              ),
-              FlatButton.icon(
+
+              RaisedButton.icon(
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => SignUpScreen()));
                   },
-                  color: Colors.orangeAccent,
-                  icon: Icon(Icons.arrow_drop_down_circle),
+                  icon: Icon(Icons.person_add, color: Colors.blueAccent,),
                   label: Text('Sign Up!')),
             ],
           )

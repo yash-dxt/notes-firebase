@@ -26,75 +26,90 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextFormField(
-                      decoration: InputDecoration(hintText: 'Email'),
-                      validator: (input) =>
-                          input.isNotEmpty ? null : "Enter a valid email!",
-                      onChanged: (value) {
-                        email = value;
-                      },
+                    Text('WELCOME!', style: TextStyle(fontWeight: FontWeight.w400, letterSpacing: 1.2),),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.1,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            hintText: 'Email', border: OutlineInputBorder()),
+                        validator: (input) =>
+                            input.isNotEmpty ? null : "Enter a valid email!",
+                        onChanged: (value) {
+                          email = value;
+                        },
+                      ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(hintText: 'Password'),
-                      validator: (input) => input.length > 6
-                          ? null
-                          : "Enter a password greater than 6 characters",
-                      obscureText: true,
-                      onChanged: (value) {
-                        password = value;
-                      },
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.1,
+
+                      child: TextFormField(
+                        decoration: InputDecoration(hintText: 'Password', border: OutlineInputBorder()),
+                        validator: (input) => input.length > 6
+                            ? null
+                            : "Enter a password greater than 6 characters",
+                        obscureText: true,
+                        onChanged: (value) {
+                          password = value;
+                        },
+                      ),
                     ),
+                    SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        FlatButton.icon(
+                        RaisedButton.icon(
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
-                              authData.changeBool();
+                              try {
+                                authData.changeBool();
 
-                              await authData.signIn(email, password);
-                              authData.changeBool();
+                                await authData.signIn(email, password);
+                                authData.changeBool();
 
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => StreamProvider(
-                                          create: (BuildContext context) {
-                                            final firebaseService =
-                                                FirestoreService();
-                                            return firebaseService
-                                                .getNotes(email);
-                                          },
-                                          child: NotesScreen(email))));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => StreamProvider(
+                                            create: (BuildContext context) {
+                                              final firebaseService =
+                                                  FirestoreService();
+                                              return firebaseService
+                                                  .getNotes(email);
+                                            },
+                                            child: NotesScreen(email))));
+                              } on Exception catch (e) {
+                                print('error!');
+                              }
                             }
                           },
                           icon: Icon(Icons.adjust),
                           label: Text('Login!'),
-                          color: Colors.orangeAccent,
                         ),
+                        SizedBox(width: 22,)
                       ],
                     ),
-                    FlatButton(
-                      child: Text('Go Back '),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => WelcomeScreen()));
-                      },
-                    ),
+                    SizedBox(height: 10,),
+                    Text('OR'),
                     SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
-                    TextField(
-                      onChanged: (value) {
-                        recoverAccountEmail = value;
-                      },
-                      decoration: InputDecoration(
-                          labelText: 'Enter email to reset password'),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.1,
+
+                      child: TextField(
+                        onChanged: (value) {
+                          recoverAccountEmail = value;
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                            labelText: 'Enter email to reset password'),
+                      ),
                     ),
                     SizedBox(
                       height: 10,

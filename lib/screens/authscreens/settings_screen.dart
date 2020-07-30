@@ -17,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
-              title: Text('Sign Out Screen'),
+              title: Text('Settings'),
             ),
             body: Center(
               child: SingleChildScrollView(
@@ -28,18 +28,23 @@ class SettingsScreen extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    RaisedButton(
-                      onPressed: () {
-                        user.isEmailVerified
-                            ? print('already verified')
-                            : user.sendEmailVerification();
-                      },
-                      child: Text('Send Verification Link!'),
-                    ),
+                    user.isEmailVerified
+                        ? RaisedButton.icon(
+                            icon: Icon(Icons.email),
+                            onPressed: () async {
+                              authData.changeBool();
+                              await user.sendEmailVerification();
+                              await authData.getCurrentUser();
+                              authData.changeBool();
+                            },
+                            label: Text('Send Verification Link!'),
+                          )
+                        : Text("You're verified!"),
                     SizedBox(
                       height: 20,
                     ),
-                    RaisedButton(
+                    RaisedButton.icon(
+                      icon: Icon(Icons.exit_to_app),
                       onPressed: () async {
                         authData.changeBool();
 
@@ -51,53 +56,24 @@ class SettingsScreen extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => WelcomeScreen()));
                       },
-                      child: Text(' Sign Out !'),
+                      label: Text(' Sign Out '),
                     ),
                     SizedBox(
                       height: 10,
-                    ),
-                    Text('To become an elite you have to verify your email'),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextField(
-                      obscureText: true,
-                      onChanged: (value) {
-                        password = value;
-                      },
-                      decoration:
-                          InputDecoration(labelText: 'Enter new password here'),
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     RaisedButton(
                       onPressed: () async {
-                        await user.updatePassword(password);
+                        authData.changeBool();
+                        await authData.sendPasswordResetEmail(user.email);
+                        authData.changeBool();
                       },
                       child: Text('Reset password!'),
                     ),
                     SizedBox(
                       height: 10,
-                    ),
-                    TextField(
-                      onChanged: (value) {
-                        email = value;
-                      },
-                      decoration:
-                          InputDecoration(labelText: 'Enter new Email here'),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    RaisedButton(
-                      onPressed: () async {
-                        await user.updateEmail(email);
-                      },
-                      child: Text('Reset password!'),
                     ),
                   ],
                 ),
